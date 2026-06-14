@@ -1,0 +1,20 @@
+{
+  "config": {
+    "step": {
+      "user": {
+        "title": "Tuya Lock Open Logs",
+        "description": "Tuya IoT (Cloud Development) project credentials and the lock device info.",
+        "data": {
+          "access_id": "Access ID (Client ID)",
+          "access_secret": "Access Secret",
+          "device_id": "Lock device ID",
+          "region": "Data center",
+          "scan_interval": "Polling interval (seconds)"
+        }
+      }
+    },
+    "error": {
+      "cannot_connect": "Could not connect to the Tuya API. Check credentials, device_id and region."
+    }
+  }
+}

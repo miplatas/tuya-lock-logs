@@ -1,0 +1,20 @@
+{
+  "config": {
+    "step": {
+      "user": {
+        "title": "Tuya Lock Open Logs",
+        "description": "Datos de tu proyecto Tuya IoT (Cloud Development) y del dispositivo de la chapa.",
+        "data": {
+          "access_id": "Access ID (Client ID)",
+          "access_secret": "Access Secret",
+          "device_id": "Device ID de la chapa",
+          "region": "Centro de datos",
+          "scan_interval": "Intervalo de consulta (segundos)"
+        }
+      }
+    },
+    "error": {
+      "cannot_connect": "No se pudo conectar con la API de Tuya. Verifica credenciales, device_id y region."
+    }
+  }
+}

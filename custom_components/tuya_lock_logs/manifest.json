@@ -1,0 +1,11 @@
+{
+  "domain": "tuya_lock_logs",
+  "name": "Tuya Lock Open Logs",
+  "config_flow": true,
+  "documentation": "https://github.com/miplatas/tuya_lock_logs",
+  "issue_tracker": "https://github.com/miplatas/tuya_lock_logs/issues",
+  "codeowners": ["@miplatas"],
+  "iot_class": "cloud_polling",
+  "requirements": ["requests"],
+  "version": "0.1.0"
+}
