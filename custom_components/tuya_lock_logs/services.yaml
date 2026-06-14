@@ -1,0 +1,25 @@
+refresh:
+  name: Actualizar registros de la chapa
+  description: >-
+    Fuerza una consulta a Tuya de los registros de apertura, opcionalmente
+    despues de un retraso. Util para llamarlo desde una automatizacion
+    disparada por un sensor de puerta/presencia.
+  fields:
+    delay:
+      name: Retraso
+      description: >-
+        Segundos a esperar antes de consultar Tuya. Si no se especifica,
+        usa el valor configurado en las opciones de la integracion.
+      example: 5
+      selector:
+        number:
+          min: 0
+          max: 120
+          unit_of_measurement: s
+    entry_id:
+      name: Entrada
+      description: >-
+        ID de la entrada de configuracion a refrescar. Si no se especifica,
+        se refrescan todas las chapas configuradas con esta integracion.
+      selector:
+        text:

@@ -9,12 +9,26 @@
           "access_secret": "Access Secret",
           "device_id": "Lock device ID",
           "region": "Data center",
-          "scan_interval": "Polling interval (seconds)"
+          "fast_scan_interval": "Fast interval (opens), seconds",
+          "slow_scan_interval": "Slow interval (battery/alarms), seconds",
+          "trigger_delay": "Remote trigger delay (seconds)"
         }
       }
     },
     "error": {
       "cannot_connect": "Could not connect to the Tuya API. Check credentials, device_id and region."
+    }
+  },
+  "options": {
+    "step": {
+      "init": {
+        "title": "Tuya Lock Open Logs options",
+        "data": {
+          "fast_scan_interval": "Fast interval (opens), seconds",
+          "slow_scan_interval": "Slow interval (battery/alarms), seconds",
+          "trigger_delay": "Remote trigger delay (seconds)"
+        }
+      }
     }
   }
 }
