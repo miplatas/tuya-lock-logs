@@ -11,9 +11,10 @@ from homeassistant.components.sensor import (
 from homeassistant.config_entries import ConfigEntry
 from homeassistant.const import PERCENTAGE
 from homeassistant.core import HomeAssistant
+from homeassistant.helpers.entity import DeviceInfo
 from homeassistant.helpers.update_coordinator import CoordinatorEntity
 
-from .const import DOMAIN, UNLOCK_METHODS
+from .const import CONF_DEVICE_ID, DOMAIN, UNLOCK_METHODS
 
 
 async def async_setup_entry(hass: HomeAssistant, entry: ConfigEntry, async_add_entities):
@@ -34,6 +35,14 @@ def _method_name(code: str) -> str:
     return UNLOCK_METHODS.get(code, code or "Unknown")
 
 
+def _device_info(entry: ConfigEntry) -> DeviceInfo:
+    return DeviceInfo(
+        identifiers={(DOMAIN, entry.data[CONF_DEVICE_ID])},
+        name=entry.title,
+        manufacturer="Tuya",
+    )
+
+
 class TuyaLockLastOpenSensor(CoordinatorEntity, SensorEntity):
     _attr_icon = "mdi:account-lock-open"
     _attr_has_entity_name = True
@@ -42,6 +51,7 @@ class TuyaLockLastOpenSensor(CoordinatorEntity, SensorEntity):
     def __init__(self, coordinator, entry: ConfigEntry):
         super().__init__(coordinator)
         self._attr_unique_id = f"{entry.entry_id}_last_open"
+        self._attr_device_info = _device_info(entry)
 
     @property
     def native_value(self):
@@ -88,6 +98,7 @@ class TuyaLockLastOpenTimeSensor(CoordinatorEntity, SensorEntity):
     def __init__(self, coordinator, entry: ConfigEntry):
         super().__init__(coordinator)
         self._attr_unique_id = f"{entry.entry_id}_last_open_time"
+        self._attr_device_info = _device_info(entry)
 
     @property
     def native_value(self):
@@ -110,6 +121,7 @@ class TuyaLockBatterySensor(CoordinatorEntity, SensorEntity):
     def __init__(self, coordinator, entry: ConfigEntry):
         super().__init__(coordinator)
         self._attr_unique_id = f"{entry.entry_id}_battery"
+        self._attr_device_info = _device_info(entry)
 
     @property
     def native_value(self):
