@@ -172,6 +172,15 @@ class TuyaAPI:
 
         return {"last": last, "today_count": today_total}
 
+    _BATTERY_STATE_MAP = {
+        "high": 100,
+        "medium": 50,
+        "low": 20,
+        "power_low": 5,
+        "strong": 100,
+        "normal": 60,
+    }
+
     def get_status_summary(self, device_id: str) -> dict:
         """Resumen 'lento': bateria y alarmas recientes (cambian poco)."""
         import logging
@@ -186,11 +195,15 @@ class TuyaAPI:
                 "battery",
                 "battery_level",
                 "va_battery",
-                "battery_state",
             ):
                 if code in status:
-                    battery = status[code]
+                    battery = int(status[code])
                     break
+            if battery is None and "battery_state" in status:
+                raw = status["battery_state"]
+                battery = self._BATTERY_STATE_MAP.get(raw)
+                if battery is None:
+                    _log.warning("[tuya_lock_logs] battery_state desconocido: %r", raw)
             if battery is None:
                 _log.warning(
                     "[tuya_lock_logs] No se encontró DP de batería. DPs disponibles: %s",
