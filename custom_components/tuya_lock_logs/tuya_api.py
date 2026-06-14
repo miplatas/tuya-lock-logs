@@ -174,15 +174,30 @@ class TuyaAPI:
 
     def get_status_summary(self, device_id: str) -> dict:
         """Resumen 'lento': bateria y alarmas recientes (cambian poco)."""
+        import logging
+        _log = logging.getLogger(__name__)
         battery = None
         try:
             status = self.get_device_status(device_id)
-            for code in ("battery_percentage", "residual_electricity", "battery"):
+            _log.debug("[tuya_lock_logs] device status DPs: %s", status)
+            for code in (
+                "battery_percentage",
+                "residual_electricity",
+                "battery",
+                "battery_level",
+                "va_battery",
+                "battery_state",
+            ):
                 if code in status:
                     battery = status[code]
                     break
-        except Exception:  # noqa: BLE001
-            pass
+            if battery is None:
+                _log.warning(
+                    "[tuya_lock_logs] No se encontró DP de batería. DPs disponibles: %s",
+                    list(status.keys()),
+                )
+        except Exception as exc:  # noqa: BLE001
+            _log.warning("[tuya_lock_logs] Error obteniendo estado del dispositivo: %s", exc)
 
         alarms: list = []
         try:

@@ -132,10 +132,6 @@ class TuyaLockBatterySensor(CoordinatorEntity, SensorEntity):
     def native_value(self):
         return self.coordinator.data.get("battery")
 
-    @property
-    def available(self):
-        return super().available and self.coordinator.data.get("battery") is not None
-
 
 class TuyaLockAlarmSensor(CoordinatorEntity, SensorEntity):
     _attr_icon = "mdi:shield-alert-outline"
