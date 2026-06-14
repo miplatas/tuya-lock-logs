@@ -1,7 +1,7 @@
-"""Cliente minimo para la Tuya Open API (sign_method 2.0, HMAC-SHA256).
+"""Minimal client for the Tuya Open API (sign_method 2.0, HMAC-SHA256).
 
-No depende del SDK oficial de Tuya. Solo implementa lo necesario para
-autenticarse y hacer peticiones GET (consulta de open-logs de la chapa).
+It does not depend on the official Tuya SDK. It only implements the pieces
+needed to authenticate and perform GET requests (lock open-log queries).
 """
 import hashlib
 import hmac
@@ -30,7 +30,7 @@ class TuyaAPI:
     def _sign(self, method: str, full_path: str, access_token: str = "") -> tuple[str, str]:
         t = str(int(time.time() * 1000))
         content_sha256 = hashlib.sha256(b"").hexdigest()
-        # method \n content-sha256 \n headers(vacio) \n url
+        # method \n content-sha256 \n headers(empty) \n url
         string_to_sign = f"{method}\n{content_sha256}\n\n{full_path}"
         sign_str = self.access_id + access_token + t + string_to_sign
         sign = hmac.new(
@@ -74,7 +74,7 @@ class TuyaAPI:
         return resp.json()
 
     def get_users(self, device_id: str, ttl: int = 3600) -> list:
-        """Lista de usuarios del hogar con sus metodos de desbloqueo (cacheada)."""
+        """List the home users and their unlock methods (cached)."""
         if self._users_cache is not None and time.time() - self._users_cache_time < ttl:
             return self._users_cache
 
@@ -99,7 +99,7 @@ class TuyaAPI:
         return records
 
     def resolve_user_name(self, device_id: str, log: dict) -> str | None:
-        """Intenta mapear un registro de open-logs a un nombre de usuario."""
+        """Try to map an open-log record to a user name."""
         try:
             users = self.get_users(device_id)
         except Exception:
@@ -124,7 +124,7 @@ class TuyaAPI:
         return None
 
     def get_open_logs(self, device_id: str, start_time_ms: int, end_time_ms: int, page_size: int = 10):
-        """Devuelve (logs, total) ordenados del mas reciente al mas viejo."""
+        """Return (logs, total) sorted from newest to oldest."""
         path = f"/v1.1/devices/{device_id}/door-lock/open-logs"
         params = {
             "page_no": "1",
@@ -141,7 +141,7 @@ class TuyaAPI:
         return logs, result.get("total", len(logs))
 
     def get_alarm_logs(self, device_id: str, page_size: int = 5) -> list:
-        """Ultimas alertas de la chapa (tamper, forzado, batera baja, etc.)."""
+        """Latest lock alarms (tamper, forced entry, low battery, etc.)."""
         path = f"/v1.1/devices/{device_id}/door-lock/alarm-logs"
         params = {"page_no": "1", "page_size": str(page_size)}
         data = self.get(path, params)
@@ -152,14 +152,14 @@ class TuyaAPI:
         return records
 
     def get_device_status(self, device_id: str) -> dict:
-        """DPs actuales del dispositivo (para bateria, etc.)."""
+        """Current device DPs (for battery, etc.)."""
         data = self.get(f"/v1.0/devices/{device_id}/status")
         if not data.get("success"):
             raise RuntimeError(f"Tuya API error (status): {data}")
         return {item["code"]: item["value"] for item in data.get("result", [])}
 
-    def get_open_summary(self, device_id: str, today_start_ms: int) -> dict:
-        """Resumen 'rapido': ultima apertura (con usuario resuelto) y conteo de hoy."""
+    def get_open_summary(self, device_id: str) -> dict:
+        """Fast summary: last open event (with resolved user)."""
         now_ms = int(time.time() * 1000)
         week_ago_ms = now_ms - 7 * 24 * 60 * 60 * 1000
 
@@ -168,9 +168,7 @@ class TuyaAPI:
         if last:
             last["resolved_user"] = self.resolve_user_name(device_id, last)
 
-        _, today_total = self.get_open_logs(device_id, today_start_ms, now_ms, page_size=1)
-
-        return {"last": last, "today_count": today_total}
+        return {"last": last}
 
     _BATTERY_STATE_MAP = {
         "high": 100,
@@ -182,7 +180,7 @@ class TuyaAPI:
     }
 
     def get_status_summary(self, device_id: str) -> dict:
-        """Resumen 'lento': bateria y alarmas recientes (cambian poco)."""
+        """Slow summary: battery and recent alarms (change infrequently)."""
         import logging
         _log = logging.getLogger(__name__)
         battery = None
@@ -203,19 +201,13 @@ class TuyaAPI:
                 raw = status["battery_state"]
                 battery = self._BATTERY_STATE_MAP.get(raw)
                 if battery is None:
-                    _log.warning("[tuya_lock_logs] battery_state desconocido: %r", raw)
+                    _log.warning("[tuya_lock_logs] Unknown battery_state: %r", raw)
             if battery is None:
                 _log.warning(
-                    "[tuya_lock_logs] No se encontró DP de batería. DPs disponibles: %s",
+                    "[tuya_lock_logs] No battery DP found. Available DPs: %s",
                     list(status.keys()),
                 )
         except Exception as exc:  # noqa: BLE001
-            _log.warning("[tuya_lock_logs] Error obteniendo estado del dispositivo: %s", exc)
+            _log.warning("[tuya_lock_logs] Error getting device status: %s", exc)
 
-        alarms: list = []
-        try:
-            alarms = self.get_alarm_logs(device_id, page_size=5)
-        except Exception:  # noqa: BLE001
-            pass
-
-        return {"battery": battery, "alarms": alarms}
+        return {"battery": battery}

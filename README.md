@@ -1,45 +1,51 @@
 # Tuya Lock Open Logs
 
-Integración para Home Assistant (instalable vía HACS como repositorio personalizado)
-que crea un sensor con el **último registro de apertura física** de una chapa Tuya
-(huella, tarjeta, contraseña, llave, app, etc.).
+Home Assistant integration (installable via HACS as a custom repository) that
+creates a sensor with the **latest physical unlock event** from a Tuya lock
+(fingerprint, card, password, mechanical key, app, etc.).
 
-No usa ni habilita el desbloqueo remoto: solo consulta el endpoint de
-`open-logs` (historial de aperturas) de la Tuya Cloud API.
+It does not use or enable remote unlocking: it only queries the Tuya Cloud API
+`open-logs` endpoint (unlock history).
 
-## Requisitos
+## Requirements
 
-1. Proyecto creado en [Tuya IoT Platform](https://iot.tuya.com/) (Cloud Development).
-2. **Access ID / Client ID** y **Access Secret** del proyecto.
-3. El dispositivo (chapa) vinculado a tu cuenta y autorizado en el proyecto
-   (pestaña *Devices* → *Link Tuya App Account*, o *Asset* → vincular el activo).
-4. Suscripción a la API **Smart Lock Open API** dentro del proyecto
-   (en "Service API" / "Subscribe API"), si no está habilitada por defecto.
-5. El **Device ID** de la chapa (se ve en *Devices* dentro del proyecto).
-6. Centro de datos: **América (Western America)**.
+1. A project created in [Tuya IoT Platform](https://iot.tuya.com/) (Cloud Development).
+2. **Access ID / Client ID** and **Access Secret** for the project.
+3. The lock device linked to your account and authorized in the project
+   (*Devices* → *Link Tuya App Account*, or *Asset* → link the asset).
+4. Subscription to the **Smart Lock Open API** within the project
+   (in "Service API" / "Subscribe API"), if it is not enabled by default.
+5. The lock **Device ID** (visible under *Devices* in the project).
+6. Data center: **America (Western America)**.
 
-## Instalación
+## Installation
 
-1. En HACS → Integraciones → menú (⋮) → *Repositorios personalizados* → agrega
-   la URL de este repositorio.
-2. Instala "Tuya Lock Open Logs" y reinicia Home Assistant.
-3. Ajustes → Dispositivos y servicios → Agregar integración → "Tuya Lock Open Logs".
-4. Captura `Access ID`, `Access Secret`, `Device ID` y selecciona región
-   (América / us).
+1. In HACS → Integrations → menu (⋮) → *Custom repositories* → add the URL of
+   this repository.
+2. Install "Tuya Lock Open Logs" and restart Home Assistant.
+3. Settings → Devices & services → Add integration → "Tuya Lock Open Logs".
+4. Enter `Access ID`, `Access Secret`, `Device ID`, and select the region
+   (America / us).
 
-## Entidad creada
+## Created entities
 
-- `sensor.<entrada>_ultima_apertura`
-  - **Estado**: nombre configurado para el método de apertura (ej. "Miguel"),
-    o el nombre genérico del método si no tiene nombre (ej. "Huella").
-  - **Atributos**: `metodo`, `metodo_raw`, `user_id`, `hora` (UTC ISO 8601),
-    `raw` (registro completo devuelto por Tuya).
+- `sensor.<entry>_last_open`
+   - **State**: the configured name for the unlock method (e.g. "Miguel"), or
+      the generic method name if it has no custom name (e.g. "Fingerprint").
+   - **Attributes**: `method`, `method_raw`, `user`, `user_id`, `time` (UTC ISO
+      8601), `raw` (full record returned by Tuya).
+- `sensor.<entry>_last_open_time`
+   - **State**: the timestamp of the most recent unlock event.
+- `sensor.<entry>_battery`
+   - **State**: the lock battery level as a percentage when Tuya exposes a
+      numeric battery value, or a mapped percentage when it exposes a battery
+      state such as `high`, `medium`, or `low`.
 
-## Notas
+## Notes
 
-- Por defecto consulta cada 5 minutos (`scan_interval`, configurable durante
-  el alta de la integración).
-- Solo lee `open-logs`; no se solicitan permisos de control remoto.
-- Si la API responde error de credenciales o "permission deny", revisa que la
-  API "Smart Lock" esté suscrita en el proyecto y que el dispositivo esté
-  vinculado/autorizado.
+- By default it polls every 5 minutes (`scan_interval`, configurable during
+  setup).
+- It only reads `open-logs`; no remote control permissions are requested.
+- If the API returns a credentials error or "permission deny", make sure the
+  "Smart Lock" API is subscribed in the project and that the device is linked
+  and authorized.

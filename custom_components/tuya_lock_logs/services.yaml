@@ -1,15 +1,14 @@
 refresh:
-  name: Actualizar registros de la chapa
+  name: Refresh lock records
   description: >-
-    Fuerza una consulta a Tuya de los registros de apertura, opcionalmente
-    despues de un retraso. Util para llamarlo desde una automatizacion
-    disparada por un sensor de puerta/presencia.
+    Force a Tuya query for open records, optionally after a delay. Useful
+    when called from an automation triggered by a door or presence sensor.
   fields:
     delay:
-      name: Retraso
+      name: Delay
       description: >-
-        Segundos a esperar antes de consultar Tuya. Si no se especifica,
-        usa el valor configurado en las opciones de la integracion.
+        Seconds to wait before querying Tuya. If omitted, the value
+        configured in the integration options is used.
       example: 5
       selector:
         number:
@@ -17,9 +16,9 @@ refresh:
           max: 120
           unit_of_measurement: s
     entry_id:
-      name: Entrada
+      name: Entry
       description: >-
-        ID de la entrada de configuracion a refrescar. Si no se especifica,
-        se refrescan todas las chapas configuradas con esta integracion.
+        Configuration entry ID to refresh. If omitted, all locks configured
+        with this integration are refreshed.
       selector:
         text:

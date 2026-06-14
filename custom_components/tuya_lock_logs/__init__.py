@@ -1,4 +1,4 @@
-"""Tuya Lock Open Logs - quien abrio la chapa fisicamente."""
+"""Tuya Lock Open Logs - who physically opened the lock."""
 from __future__ import annotations
 
 import asyncio
@@ -10,7 +10,6 @@ import voluptuous as vol
 from homeassistant.config_entries import ConfigEntry
 from homeassistant.core import HomeAssistant, ServiceCall
 from homeassistant.helpers.update_coordinator import DataUpdateCoordinator, UpdateFailed
-from homeassistant.util import dt as dt_util
 
 from .const import (
     CONF_ACCESS_ID,
@@ -60,19 +59,16 @@ async def async_setup_entry(hass: HomeAssistant, entry: ConfigEntry) -> bool:
     trigger_delay = _setting(entry, CONF_TRIGGER_DELAY, DEFAULT_TRIGGER_DELAY)
 
     async def async_update_fast():
-        today_start_ms = int(dt_util.start_of_local_day().timestamp() * 1000)
         try:
-            return await hass.async_add_executor_job(
-                api.get_open_summary, device_id, today_start_ms
-            )
+            return await hass.async_add_executor_job(api.get_open_summary, device_id)
         except Exception as err:  # noqa: BLE001
-            raise UpdateFailed(f"Error consultando open-logs de Tuya: {err}") from err
+            raise UpdateFailed(f"Error querying Tuya open-logs: {err}") from err
 
     async def async_update_slow():
         try:
             return await hass.async_add_executor_job(api.get_status_summary, device_id)
         except Exception as err:  # noqa: BLE001
-            raise UpdateFailed(f"Error consultando estado de Tuya: {err}") from err
+            raise UpdateFailed(f"Error querying Tuya status: {err}") from err
 
     fast_coordinator = DataUpdateCoordinator(
         hass,

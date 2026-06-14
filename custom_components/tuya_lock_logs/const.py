@@ -8,12 +8,12 @@ CONF_FAST_SCAN_INTERVAL = "fast_scan_interval"
 CONF_SLOW_SCAN_INTERVAL = "slow_scan_interval"
 CONF_TRIGGER_DELAY = "trigger_delay"
 
-# "Rapido": ultima apertura + conteo de hoy (lo que importa para el log de accesos)
+# "Fast": last open (access log)
 DEFAULT_FAST_SCAN_INTERVAL = 300  # 5 min
-# "Lento": bateria + alarmas (cambia poco)
+# "Slow": battery (changes rarely)
 DEFAULT_SLOW_SCAN_INTERVAL = 3600  # 1 h
-# Retraso por defecto del servicio de refresh por trigger (sensor de puerta/presencia)
-DEFAULT_TRIGGER_DELAY = 5  # segundos
+# Default delay for the refresh service triggered by an external sensor
+DEFAULT_TRIGGER_DELAY = 5  # seconds
 
 SERVICE_REFRESH = "refresh"
 
@@ -24,31 +24,31 @@ REGIONS = {
     "in": "https://openapi.tuyain.com",
 }
 
-# Traduccion de status.code -> nombre legible cuando no hay unlock_name
+# Translation of status.code -> readable label when unlock_name is missing
 UNLOCK_METHODS = {
-    "unlock_fingerprint": "Huella",
-    "unlock_password": "Contraseña",
-    "unlock_card": "Tarjeta",
+    "unlock_fingerprint": "Fingerprint",
+    "unlock_password": "Password",
+    "unlock_card": "Card",
     "unlock_app": "App",
-    "unlock_face": "Rostro",
-    "unlock_dynamic": "Contraseña dinámica",
-    "unlock_temporary": "Contraseña temporal",
-    "unlock_key": "Llave mecánica",
-    "unlock_remote": "Remoto",
-    "unlock_voice": "Voz",
+    "unlock_face": "Face",
+    "unlock_dynamic": "Dynamic password",
+    "unlock_temporary": "Temporary password",
+    "unlock_key": "Mechanical key",
+    "unlock_remote": "Remote",
+    "unlock_voice": "Voice",
 }
 
-# Traduccion de codigos de alarma comunes en chapas Tuya
+# Translation of common alarm codes in Tuya locks
 ALARM_CODES = {
-    "alarm_lock": "Alarma de chapa",
-    "hijack": "Coacción (duress)",
-    "tamper_alarm": "Sabotaje",
-    "pry_alarm": "Forzado",
-    "shock_alarm": "Golpe/impacto",
-    "low_battery": "Batería baja",
-    "low_battery_alarm": "Batería baja",
-    "wrong_password": "Contraseña incorrecta",
-    "wrong_finger": "Huella incorrecta",
-    "door_open_timeout": "Puerta abierta mucho tiempo",
-    "doorbell": "Timbre",
+    "alarm_lock": "Lock alarm",
+    "hijack": "Duress",
+    "tamper_alarm": "Tamper",
+    "pry_alarm": "Forced entry",
+    "shock_alarm": "Shock/impact",
+    "low_battery": "Low battery",
+    "low_battery_alarm": "Low battery",
+    "wrong_password": "Wrong password",
+    "wrong_finger": "Wrong fingerprint",
+    "door_open_timeout": "Door left open too long",
+    "doorbell": "Doorbell",
 }

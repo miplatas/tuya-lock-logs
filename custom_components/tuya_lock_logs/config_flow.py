@@ -1,4 +1,4 @@
-"""Config flow para Tuya Lock Open Logs."""
+"""Config flow for Tuya Lock Open Logs."""
 from __future__ import annotations
 
 import voluptuous as vol
@@ -55,11 +55,8 @@ class TuyaLockLogsConfigFlow(config_entries.ConfigFlow, domain=DOMAIN):
                 user_input[CONF_ACCESS_SECRET],
             )
             try:
-                from homeassistant.util import dt as dt_util
-
-                today_start_ms = int(dt_util.start_of_local_day().timestamp() * 1000)
                 await self.hass.async_add_executor_job(
-                    api.get_open_summary, user_input[CONF_DEVICE_ID], today_start_ms
+                    api.get_open_summary, user_input[CONF_DEVICE_ID]
                 )
             except Exception:  # noqa: BLE001
                 errors["base"] = "cannot_connect"

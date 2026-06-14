@@ -3,30 +3,30 @@
     "step": {
       "user": {
         "title": "Tuya Lock Open Logs",
-        "description": "Datos de tu proyecto Tuya IoT (Cloud Development) y del dispositivo de la chapa.",
+        "description": "Tuya IoT (Cloud Development) project credentials and lock device information.",
         "data": {
           "access_id": "Access ID (Client ID)",
           "access_secret": "Access Secret",
-          "device_id": "Device ID de la chapa",
-          "region": "Centro de datos",
-          "fast_scan_interval": "Intervalo rápido (aperturas), segundos",
-          "slow_scan_interval": "Intervalo lento (batería/alarmas), segundos",
-          "trigger_delay": "Retraso del trigger remoto (segundos)"
+          "device_id": "Lock device ID",
+          "region": "Data center",
+          "fast_scan_interval": "Fast interval (opens), seconds",
+          "slow_scan_interval": "Slow interval (battery/alarms), seconds",
+          "trigger_delay": "Remote trigger delay (seconds)"
         }
       }
     },
     "error": {
-      "cannot_connect": "No se pudo conectar con la API de Tuya. Verifica credenciales, device_id y region."
+      "cannot_connect": "Could not connect to the Tuya API. Check credentials, device_id, and region."
     }
   },
   "options": {
     "step": {
       "init": {
-        "title": "Opciones de Tuya Lock Open Logs",
+        "title": "Tuya Lock Open Logs options",
         "data": {
-          "fast_scan_interval": "Intervalo rápido (aperturas), segundos",
-          "slow_scan_interval": "Intervalo lento (batería/alarmas), segundos",
-          "trigger_delay": "Retraso del trigger remoto (segundos)"
+          "fast_scan_interval": "Fast interval (opens), seconds",
+          "slow_scan_interval": "Slow interval (battery/alarms), seconds",
+          "trigger_delay": "Remote trigger delay (seconds)"
         }
       }
     }
