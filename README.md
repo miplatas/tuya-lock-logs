@@ -7,6 +7,15 @@ creates a sensor with the **latest physical unlock event** from a Tuya lock
 It does not use or enable remote unlocking: it only queries the Tuya Cloud API
 `open-logs` endpoint (unlock history).
 
+## Image examples
+
+These images are included in the repository as visual references for the integration:
+
+| File | Description | Preview |
+|---|---|---|
+| `images/sensors.png` | Example of the Home Assistant sensors created by the integration. | <img src="https://raw.githubusercontent.com/miplatas/tuya-lock-logs/main/images/test1.png" alt="Sensors example" width="220" /> |
+
+
 ## Requirements
 
 1. A project created in [Tuya IoT Platform](https://iot.tuya.com/) (Cloud Development).
