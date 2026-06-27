@@ -1,5 +1,10 @@
 # Tuya Lock Open Logs
 
+[![hacs_badge](https://img.shields.io/badge/HACS-Custom-orange.svg)](https://github.com/hacs/integration)
+[![GitHub release (latest by date)](https://img.shields.io/github/v/release/miplatas/time-spent-pie-card?display_name=tag)](https://github.com/miplatas/time-spent-pie-card/releases)
+[![GitHub last commit](https://img.shields.io/github/last-commit/miplatas/time-spent-pie-card)](https://github.com/miplatas/time-spent-pie-card/commits/main)
+[![PayPal](https://img.shields.io/badge/Donate-PayPal-00457C?logo=paypal&logoColor=white)](https://paypal.me/miplatas)
+
 Home Assistant integration (installable via HACS as a custom repository) that
 creates a sensor with the **latest physical unlock event** from a Tuya lock
 (fingerprint, card, password, mechanical key, app, etc.).
@@ -58,3 +63,7 @@ These images are included in the repository as visual references for the integra
 - If the API returns a credentials error or "permission deny", make sure the
   "Smart Lock" API is subscribed in the project and that the device is linked
   and authorized.
+
+## License
+
+GNU GENERAL PUBLIC LICENSE Version 3, 29 June 2007.
