@@ -13,7 +13,7 @@ These images are included in the repository as visual references for the integra
 
 | File | Description | Preview |
 |---|---|---|
-| `images/sensors.png` | Example of the Home Assistant sensors created by the integration. | <img src="https://raw.githubusercontent.com/miplatas/tuya-lock-logs/main/images/test1.png" alt="Sensors example" width="220" /> |
+| `images/test1.png` | Example of the Home Assistant sensors created by the integration. | <img src="https://raw.githubusercontent.com/miplatas/tuya-lock-logs/main/images/test1.png" alt="Sensors example" width="220" /> |
 
 
 ## Requirements
@@ -39,8 +39,8 @@ These images are included in the repository as visual references for the integra
 ## Created entities
 
 - `sensor.<entry>_last_open`
-   - **State**: the configured name for the unlock method (e.g. "Miguel"), or
-      the generic method name if it has no custom name (e.g. "Fingerprint").
+   - **State**: the configured name for the unlock method (e.g. "Michael"), or
+      the generic method name if it has no custom name (e.g. "Fingerprint", "Password").
    - **Attributes**: `method`, `method_raw`, `user`, `user_id`, `time` (UTC ISO
       8601), `raw` (full record returned by Tuya).
 - `sensor.<entry>_last_open_time`
