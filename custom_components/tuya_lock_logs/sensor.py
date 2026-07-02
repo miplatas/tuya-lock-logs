@@ -26,7 +26,6 @@ async def async_setup_entry(hass: HomeAssistant, entry: ConfigEntry, async_add_e
         [
             TuyaLockLastOpenSensor(fast, entry),
             TuyaLockLastOpenFieldSensor(fast, entry, "method", "Last open method"),
-            TuyaLockLastOpenFieldSensor(fast, entry, "code", "Last open code"),
             TuyaLockLastOpenFieldSensor(fast, entry, "value", "Last open value"),
             TuyaLockLastOpenFieldSensor(fast, entry, "user_id", "Last open user ID"),
             TuyaLockLastOpenTimeSensor(fast, entry),
