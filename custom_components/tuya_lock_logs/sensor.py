@@ -25,6 +25,10 @@ async def async_setup_entry(hass: HomeAssistant, entry: ConfigEntry, async_add_e
     async_add_entities(
         [
             TuyaLockLastOpenSensor(fast, entry),
+            TuyaLockLastOpenFieldSensor(fast, entry, "method", "Last open method"),
+            TuyaLockLastOpenFieldSensor(fast, entry, "code", "Last open code"),
+            TuyaLockLastOpenFieldSensor(fast, entry, "value", "Last open value"),
+            TuyaLockLastOpenFieldSensor(fast, entry, "user_id", "Last open user ID"),
             TuyaLockLastOpenTimeSensor(fast, entry),
             TuyaLockBatterySensor(slow, entry),
         ]
@@ -87,6 +91,37 @@ class TuyaLockLastOpenSensor(CoordinatorEntity, SensorEntity):
             "time": time_value,
             "raw": log,
         }
+
+
+class TuyaLockLastOpenFieldSensor(CoordinatorEntity, SensorEntity):
+    _attr_has_entity_name = True
+
+    def __init__(self, coordinator, entry: ConfigEntry, field: str, name: str):
+        super().__init__(coordinator)
+        self._field = field
+        self._attr_name = name
+        self._attr_unique_id = f"{entry.entry_id}_last_open_{field}"
+        self._attr_device_info = _device_info(entry)
+
+    @property
+    def native_value(self):
+        log = self.coordinator.data.get("last")
+        if not log:
+            return None
+
+        if self._field == "method":
+            return _method_name(log.get("status", {}).get("code", ""))
+
+        if self._field == "code":
+            return log.get("status", {}).get("code")
+
+        if self._field == "value":
+            return log.get("status", {}).get("value")
+
+        if self._field == "user_id":
+            return log.get("user_id")
+
+        return None
 
 
 class TuyaLockLastOpenTimeSensor(CoordinatorEntity, SensorEntity):
